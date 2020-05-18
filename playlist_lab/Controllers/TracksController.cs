@@ -9,22 +9,28 @@ using playlist_lab;
 
 namespace playlist_lab.Controllers
 {
-    public class JenresController : Controller
+    public class TracksController : Controller
     {
         private readonly DBPlaylistContext _context;
 
-        public JenresController(DBPlaylistContext context)
+        public TracksController(DBPlaylistContext context)
         {
             _context = context;
         }
 
-        // GET: Jenres
-        public async Task<IActionResult> Index()
+        // GET: Tracks
+        public async Task<IActionResult> Index(int? id, string? name)
         {
-            return View(await _context.Jenres.ToListAsync());
+            if (id == null) return RedirectToAction("Jenres", "Index");
+            // search tracks by jenres
+            ViewBag.JenresId = id;
+            ViewBag.JenresName = name;
+            var tracksByJenres = _context.Tracks.Where(b => b.JenreId == id).Include(b => b.Jenre);
+            // var dBPlaylistContext = _context.Tracks.Include(t => t.Album).Include(t => t.Jenre);
+            return View(await tracksByJenres.ToListAsync());
         }
 
-        // GET: Jenres/Details/5
+        // GET: Tracks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,40 +38,45 @@ namespace playlist_lab.Controllers
                 return NotFound();
             }
 
-            var jenres = await _context.Jenres
+            var tracks = await _context.Tracks
+                .Include(t => t.Album)
+                .Include(t => t.Jenre)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (jenres == null)
+            if (tracks == null)
             {
                 return NotFound();
             }
 
-            // return View(jenres);
-            return RedirectToAction("Index", "Tracks", new { id = jenres.Id, name = jenres.Name });
+            return View(tracks);
         }
 
-        // GET: Jenres/Create
+        // GET: Tracks/Create
         public IActionResult Create()
         {
+            ViewData["AlbumId"] = new SelectList(_context.Album, "Id", "Name");
+            ViewData["JenreId"] = new SelectList(_context.Jenres, "Id", "Name");
             return View();
         }
 
-        // POST: Jenres/Create
+        // POST: Tracks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Jenres jenres)
+        public async Task<IActionResult> Create([Bind("Id,JenreId,AlbumId,Name")] Tracks tracks)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(jenres);
+                _context.Add(tracks);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(jenres);
+            ViewData["AlbumId"] = new SelectList(_context.Album, "Id", "Name", tracks.AlbumId);
+            ViewData["JenreId"] = new SelectList(_context.Jenres, "Id", "Name", tracks.JenreId);
+            return View(tracks);
         }
 
-        // GET: Jenres/Edit/5
+        // GET: Tracks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +84,24 @@ namespace playlist_lab.Controllers
                 return NotFound();
             }
 
-            var jenres = await _context.Jenres.FindAsync(id);
-            if (jenres == null)
+            var tracks = await _context.Tracks.FindAsync(id);
+            if (tracks == null)
             {
                 return NotFound();
             }
-            return View(jenres);
+            ViewData["AlbumId"] = new SelectList(_context.Album, "Id", "Name", tracks.AlbumId);
+            ViewData["JenreId"] = new SelectList(_context.Jenres, "Id", "Name", tracks.JenreId);
+            return View(tracks);
         }
 
-        // POST: Jenres/Edit/5
+        // POST: Tracks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Jenres jenres)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,JenreId,AlbumId,Name")] Tracks tracks)
         {
-            if (id != jenres.Id)
+            if (id != tracks.Id)
             {
                 return NotFound();
             }
@@ -97,12 +110,12 @@ namespace playlist_lab.Controllers
             {
                 try
                 {
-                    _context.Update(jenres);
+                    _context.Update(tracks);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!JenresExists(jenres.Id))
+                    if (!TracksExists(tracks.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +126,12 @@ namespace playlist_lab.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(jenres);
+            ViewData["AlbumId"] = new SelectList(_context.Album, "Id", "Name", tracks.AlbumId);
+            ViewData["JenreId"] = new SelectList(_context.Jenres, "Id", "Name", tracks.JenreId);
+            return View(tracks);
         }
 
-        // GET: Jenres/Delete/5
+        // GET: Tracks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +139,32 @@ namespace playlist_lab.Controllers
                 return NotFound();
             }
 
-            var jenres = await _context.Jenres
+            var tracks = await _context.Tracks
+                .Include(t => t.Album)
+                .Include(t => t.Jenre)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (jenres == null)
+            if (tracks == null)
             {
                 return NotFound();
             }
 
-            return View(jenres);
+            return View(tracks);
         }
 
-        // POST: Jenres/Delete/5
+        // POST: Tracks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var jenres = await _context.Jenres.FindAsync(id);
-            _context.Jenres.Remove(jenres);
+            var tracks = await _context.Tracks.FindAsync(id);
+            _context.Tracks.Remove(tracks);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool JenresExists(int id)
+        private bool TracksExists(int id)
         {
-            return _context.Jenres.Any(e => e.Id == id);
+            return _context.Tracks.Any(e => e.Id == id);
         }
     }
 }
