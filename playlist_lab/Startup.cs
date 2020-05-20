@@ -54,7 +54,7 @@ namespace playlist_lab
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Tracks}/{action=Index1}/{id?}");
+                    pattern: "{controller=ArtistsTracks}/{action=Index}/{id?}");
             });
         }
     }
