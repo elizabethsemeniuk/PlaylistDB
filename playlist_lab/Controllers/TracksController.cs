@@ -30,6 +30,11 @@ namespace playlist_lab.Controllers
             return View(await tracksByJenres.ToListAsync());
         }
 
+        public async Task<IActionResult> Index1(int? id, string? name)
+        {
+            var dBPlaylistContext = _context.Tracks.Include(t => t.Album).Include(t => t.Jenre);
+            return View(await dBPlaylistContext.ToListAsync());
+        }
 
         // GET: Tracks/Details/5
         public async Task<IActionResult> Details(int? id)
