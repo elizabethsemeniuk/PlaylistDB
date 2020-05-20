@@ -19,20 +19,18 @@ namespace playlist_lab.Controllers
         }
 
         // GET: Tracks
-        public async Task<IActionResult> Index(int? id, string? name)
+        public async Task<IActionResult> Index()
         {
-            if (id == null) return RedirectToAction("Jenres", "Index");
+           // if (id == null) return RedirectToAction("Jenres", "Index");
             // search tracks by jenres
-            ViewBag.JenresId = id;
-            ViewBag.JenresName = name;
-            var tracksByJenres = _context.Tracks.Where(b => b.JenreId == id).Include(b => b.Jenre).Include(t => t.Album);
-            //var dBPlaylistContext = _context.Tracks.Include(t => t.Album).Include(t => t.Jenre);
-            return View(await tracksByJenres.ToListAsync());
+            //ViewBag.JenresId = id;
+            //ViewBag.JenresName = name;
+           // var tracksByJenres = _context.Tracks.Where(b => b.JenreId == id).Include(b => b.Jenre).Include(t => t.Album);
+            var DBPlaylistContext = _context.Tracks.Include(t => t.Album).Include(t => t.Jenre);
+            return View(await DBPlaylistContext.ToListAsync());
         }
-
-
-        // GET: Tracks/Details/5
-        public async Task<IActionResult> Details(int? id)
+            // GET: Tracks/Details/5
+            public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

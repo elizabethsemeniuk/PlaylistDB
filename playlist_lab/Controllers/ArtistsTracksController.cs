@@ -46,12 +46,10 @@ namespace playlist_lab.Controllers
         }
 
         // GET: ArtistsTracks/Create
-        public IActionResult Create(string? track_name, string? art_name)
+        public IActionResult Create()
         {
-            // ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country");
-            //ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name");
-            ViewBag.TrackName = track_name;
-            ViewBag.ArtistFullname = art_name;
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country");
+            ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name");
             return View();
         }
 
@@ -60,18 +58,16 @@ namespace playlist_lab.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("Id,TrackId,ArtistId")] ArtistsTracks artistsTracks)
-        public async Task<IActionResult> Create(ArtistsTracks artistsTracks)
+        public async Task<IActionResult> Create([Bind("Id,TrackId,ArtistId")] ArtistsTracks artistsTracks)
         {
-            
             if (ModelState.IsValid)
             {
                 _context.Add(artistsTracks);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-          //  ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country", artistsTracks.ArtistId);
-           // ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", artistsTracks.TrackId); */
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country", artistsTracks.ArtistId);
+            ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", artistsTracks.TrackId);
             return View(artistsTracks);
         }
 

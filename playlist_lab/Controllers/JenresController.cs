@@ -39,8 +39,8 @@ namespace playlist_lab.Controllers
                 return NotFound();
             }
 
-            // return View(jenres);
-            return RedirectToAction("Index", "Tracks", new { id = jenres.Id, name = jenres.Name });
+             return View(jenres);
+            //return RedirectToAction("Index", "Tracks", new { id = jenres.Id, name = jenres.Name });
         }
 
         // GET: Jenres/Create
