@@ -48,7 +48,7 @@ namespace playlist_lab.Controllers
         // GET: ArtistsTracks/Create
         public IActionResult Create()
         {
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country");
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Fullname");
             ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name");
             return View();
         }
@@ -66,7 +66,7 @@ namespace playlist_lab.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country", artistsTracks.ArtistId);
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Fullname", artistsTracks.ArtistId);
             ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", artistsTracks.TrackId);
             return View(artistsTracks);
         }
@@ -84,7 +84,7 @@ namespace playlist_lab.Controllers
             {
                 return NotFound();
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country", artistsTracks.ArtistId);
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Fullname", artistsTracks.ArtistId);
             ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", artistsTracks.TrackId);
             return View(artistsTracks);
         }
@@ -121,7 +121,7 @@ namespace playlist_lab.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Country", artistsTracks.ArtistId);
+            ViewData["ArtistId"] = new SelectList(_context.Artists, "Id", "Fullname", artistsTracks.ArtistId);
             ViewData["TrackId"] = new SelectList(_context.Tracks, "Id", "Name", artistsTracks.TrackId);
             return View(artistsTracks);
         }
