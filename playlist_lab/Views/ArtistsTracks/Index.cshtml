@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Your playlist</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Select and add new song</a>
 </p>
 <table class="table">
     <thead>
@@ -25,7 +25,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Artist.Country)
+                @Html.DisplayFor(modelItem => item.Artist.Fullname)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Track.Name)
