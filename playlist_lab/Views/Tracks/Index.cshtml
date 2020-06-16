@@ -4,7 +4,7 @@
     ViewData["Title"] = "Tracks by selected jenre";
 }
 
-<h1>Tracks list @ViewBag.TrackName </h1>
+<h2 style="margin-top:10px;" >Tracks list @ViewBag.TrackName </h2>
 
 <p>
     <a asp-action="Create" asp-route-id="@ViewBag.TrackId"> Add new track</a>
@@ -39,7 +39,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Info</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
