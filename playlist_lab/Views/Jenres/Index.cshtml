@@ -45,7 +45,7 @@
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-            $.get('/api/Charts/JsonData', function (jsonData){
+            $.get('/api/Charts/JsonData', function (jsonData) {
                 data = google.visualization.arrayToDataTable(jsonData, false);
 
                 var option = {
@@ -60,3 +60,21 @@
         }
     </script>
 }
+
+<div>
+    <h3>Choose</h3>
+    @using (Html.BeginForm("Import", "Jenres", FormMethod.Post, new { enctype="multipart/formdata", id = "frm-excel" }))
+    {
+        <div>
+            Download excel-file:
+            <input type="file" name="fileExcel" id="fileExcel" />
+            <div>
+                  <input type="submit" value="Upload" class="btn btn-success" />
+            </div>
+        </div>
+    }
+</div>
+<div>
+    <h3>Downloading info to file</h3>
+    <a asp-action="Export">Download</a>
+</div> <!--file`s export-->
