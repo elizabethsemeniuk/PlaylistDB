@@ -190,7 +190,7 @@ namespace playlist_lab.Controllers
                                     _context.Jenres.Add(newjen);
                                 }
                                 //перегляд усіх рядків                    
-                                foreach (IXLRow row in worksheet.RowsUsed().Skip(1))
+                              /*  foreach (IXLRow row in worksheet.RowsUsed().Skip(1))
                                 {
                                     try
                                     {
@@ -198,9 +198,9 @@ namespace playlist_lab.Controllers
                                         track.Name = row.Cell(1).Value.ToString();
                                        // track.Info = row.Cell(6).Value.ToString();
                                         track.Jenre = newjen;
-                                        _context.Tracks.Add(track);
+                                        _context.Tracks.Add(track);*/
                                         //у разі наявності автора знайти його, у разі відсутності - додати
-                                        for (int i = 2; i <= 5; i++)
+                                      /*  for (int i = 2; i <= 5; i++)
                                         {
                                             if (row.Cell(i).Value.ToString().Length > 0)
                                             {
@@ -225,13 +225,13 @@ namespace playlist_lab.Controllers
                                                 at.Artist = artist;
                                                 _context.ArtistsTracks.Add(at);
                                             }
-                                        }
+                                        } 
                                     }
                                     catch (Exception e)
                                     {
                                         //logging самостійно :)
                                     }
-                                }
+                                } */
                             }
 
                         }
