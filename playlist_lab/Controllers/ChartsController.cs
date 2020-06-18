@@ -17,7 +17,7 @@ namespace playlist_lab.Controllers
         {
             _context = context;
         }
-        [HttpGet("JsonData")]
+       [HttpGet("JsonData")]
         public JsonResult JsonData()
         {
             var jenres = _context.Jenres.Include(b => b.Tracks).ToList();
@@ -30,5 +30,19 @@ namespace playlist_lab.Controllers
             }
             return new JsonResult(jenTracks);
         }
+
+        [HttpGet("JsonData1")]
+        public JsonResult JsonData1()
+        {
+            var arttr = _context.Album.Include(b => b.Tracks).ToList();
+            List<object> albTracks = new List<object>();
+            albTracks.Add(new[] { "Album", "Tracks quantity" });
+            foreach (var ar in arttr)
+            {
+                albTracks.Add(new object[] { ar.Name, ar.Tracks.Count() });
+
+            }
+            return new JsonResult(albTracks);
+        } 
     }
 }

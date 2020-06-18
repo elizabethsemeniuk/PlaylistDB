@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-    <h2 style="margin-top:10px;" > Albums</h2>
+<h2 style="margin-top:10px;"> Albums</h2>
 
 <p>
     <a asp-action="Create">Download new album</a>
@@ -19,16 +19,44 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div class="container">
+    <div id="chart2"></div>
+</div>
+
+@section scripts{
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.get('/api/Charts/JsonData1', function (jsonData1){
+                data = google.visualization.arrayToDataTable(jsonData1, false);
+
+                var option = {
+                    title: 'Albums vs tracks quantity',
+                    width: 500,
+                    height: 400,
+                };
+
+                chart = new google.visualization.PieChart(document.getElementById('chart2'));
+                chart.draw(data, option);
+            })
+        }
+    </script>
+}
